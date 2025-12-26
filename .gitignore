@@ -1,0 +1,100 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Cursor IDE
+.cursor/
+
+# Data files (large, should not be committed)
+data/raw/*.csv
+data/raw/*.parquet
+data/processed/*.parquet
+*.csv
+*.parquet
+
+# Model files (large, should not be committed)
+outputs/models/*.pkl
+outputs/models/*.h5
+outputs/models/*.joblib
+
+# Feature files (large, should not be committed)
+outputs/*.npz
+outputs/*.npy
+outputs/*.pkl
+
+# Outputs (generated files)
+outputs/figures/*.png
+outputs/figures/*.jpg
+outputs/figures/*.pdf
+outputs/*.json
+outputs/*.txt
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Environment variables
+.env
+.env.local
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Profiling
+.prof
+
