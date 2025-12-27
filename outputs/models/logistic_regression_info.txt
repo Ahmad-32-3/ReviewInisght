@@ -1,0 +1,55 @@
+================================================================================
+Model Information: logistic_regression
+================================================================================
+
+Model Type: LogisticRegression
+Exported At: 2025-12-26T22:52:16.643540
+
+Performance Metrics:
+--------------------------------------------------------------------------------
+  Accuracy: 0.9455
+  Precision: 0.9993
+  Recall: 0.9293
+  F1_score: 0.9630
+  Roc_auc: 0.9993
+
+Hyperparameters:
+--------------------------------------------------------------------------------
+  C: 1.0
+  class_weight: balanced
+  dual: False
+  fit_intercept: True
+  intercept_scaling: 1
+  l1_ratio: 0.0
+  max_iter: 1000
+  n_jobs: None
+  penalty: deprecated
+  random_state: 42
+  solver: lbfgs
+  tol: 0.0001
+  verbose: 0
+  warm_start: False
+
+Top Features:
+--------------------------------------------------------------------------------
+   1. material                       (coef: -0.068212)
+   2. recommend product              (coef: -0.060264)
+   3. worth                          (coef: -0.055002)
+   4. disappointed                   (coef: -0.053186)
+   5. doesn work                     (coef: -0.036317)
+   6. work                           (coef: -0.035711)
+   7. broke                          (coef: -0.033307)
+   8. waste                          (coef: -0.027966)
+   9. terrible                       (coef: -0.026969)
+  10. product                        (coef: -0.026361)
+  11. poor                           (coef: -0.026353)
+  12. defective                      (coef: -0.024344)
+  13. cheap material                 (coef: -0.021239)
+  14. great                          (coef: +0.020834)
+  15. highly recommend               (coef: +0.017613)
+  16. money                          (coef: -0.016435)
+  17. review_length                  (coef: +0.015979)
+  18. great product                  (coef: +0.015728)
+  19. review_month                   (coef: -0.014904)
+  20. satisfied                      (coef: +0.014653)
+

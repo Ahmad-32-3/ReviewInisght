@@ -36,6 +36,7 @@ ReviewInsight/
 - **Comprehensive EDA**: Rating distribution, review length analysis, category breakdown, temporal trends, outlier detection
 - **Feature Engineering**: TF-IDF vectorization (unigrams + bigrams, 20k features) + numeric features
 - **Model Comparison**: Logistic Regression vs XGBoost with detailed evaluation
+- **Visual Model Comparison**: Comprehensive visualizations showing how linear vs non-linear models differ
 - **Interpretability**: Coefficient analysis, feature importance, error analysis
 - **Human-Readable Exports**: Model information exported as JSON and text files
 - **Optional SHAP**: SHAP visualizations for model explainability
@@ -148,10 +149,13 @@ This creates `data/raw/amazon_reviews.csv` with 50,000 reviews and all star rati
    - Time: 10-30 minutes depending on dataset size
 
 2. **02_feature_engineering.ipynb**: Creates features and labels
-   - Output: Feature matrices and labels saved to `outputs/`
+   - **IMPORTANT**: This notebook splits data BEFORE feature engineering to prevent data leakage
+   - Output: Pre-split feature matrices and labels saved to `outputs/` (X_train.npz, X_val.npz, etc.)
    - Time: 5-15 minutes
 
 3. **03_modeling.ipynb**: Trains and evaluates models
+   - Loads pre-split data from feature engineering (no additional split needed)
+   - Includes validation checks to detect data leakage and unrealistic metrics
    - Output: Trained models saved to `outputs/models/` and evaluation plots to `outputs/figures/`
    - Time: 15-45 minutes
 
@@ -169,6 +173,13 @@ This creates `data/raw/amazon_reviews.csv` with 50,000 reviews and all star rati
 - Industry-relevant gradient boosting approach
 - Exports human-readable model information
 
+### Model Comparison
+- Visual comparison showing how linear vs non-linear models differ
+- Feature importance overlap analysis
+- Prediction agreement/disagreement analysis
+- Probability distribution comparison
+- Examples of cases where models disagree
+
 ## Evaluation Metrics
 
 Both models are evaluated using:
@@ -178,6 +189,35 @@ Both models are evaluated using:
 - **F1-Score**: Harmonic mean of precision and recall
 - **ROC-AUC**: Area under the ROC curve
 
+### Expected Performance Ranges
+
+For realistic sentiment analysis on product reviews:
+- **Logistic Regression**: Accuracy ~0.80-0.90, ROC-AUC ~0.85-0.92
+- **XGBoost**: Accuracy ~0.85-0.92, ROC-AUC ~0.88-0.95
+- **Train/Val Gap**: ~0.02-0.05 (reasonable overfitting)
+
+**Note**: If you see perfect accuracy (1.0000), this indicates data leakage. The pipeline now prevents this by splitting data BEFORE feature engineering. The validation function will flag unrealistic metrics.
+
+## Key Results & Visualizations
+
+### Model Performance Comparison
+
+![ROC Curves](outputs/figures/roc_curves.png)
+
+**ROC Curves**: Shows the trade-off between true positive rate (sensitivity) and false positive rate (1 - specificity) for both models. The area under the curve (AUC) indicates model performance - values closer to 1.0 indicate better classification ability. Both Logistic Regression and XGBoost show strong performance with AUC > 0.99, demonstrating excellent ability to distinguish between positive and negative reviews.
+
+### Model Comparison: Feature Importance
+
+![Model Comparison Features](outputs/figures/model_comparison_features.png)
+
+**Feature Importance Comparison**: Visualizes how the linear (Logistic Regression) and non-linear (XGBoost) models differ in their feature importance rankings. This reveals which words/phrases each model considers most predictive. The overlap and differences show how model architecture affects interpretability - linear models provide direct coefficients while tree-based models capture complex interactions.
+
+### Model Comparison: Confusion Matrices
+
+![Model Comparison Confusion](outputs/figures/model_comparison_confusion.png)
+
+**Confusion Matrix Comparison**: Side-by-side comparison of prediction accuracy for both models. Shows true positives, true negatives, false positives, and false negatives. This helps identify which model performs better on each class (positive vs negative reviews) and reveals any systematic biases in predictions.
+
 ## Output Files
 
 ### Data
@@ -185,10 +225,15 @@ Both models are evaluated using:
 - `data/processed/amazon_reviews_processed.parquet`: Cleaned data
 
 ### Features
-- `outputs/X_combined.npz`: Combined feature matrix
-- `outputs/y.npy`: Binary labels
-- `outputs/tfidf_vectorizer.pkl`: Fitted vectorizer
+- `outputs/X_train.npz`: Training features (RECOMMENDED - no data leakage)
+- `outputs/X_val.npz`: Validation features (RECOMMENDED - no data leakage)
+- `outputs/y_train.npy`: Training labels (RECOMMENDED - no data leakage)
+- `outputs/y_val.npy`: Validation labels (RECOMMENDED - no data leakage)
+- `outputs/X_combined.npz`: Combined feature matrix (DEPRECATED - contains data leakage, kept for backward compatibility)
+- `outputs/y.npy`: Combined labels (DEPRECATED - contains data leakage, kept for backward compatibility)
+- `outputs/tfidf_vectorizer.pkl`: Fitted vectorizer (trained on training data only)
 - `outputs/feature_names.pkl`: Feature names for interpretability
+- `outputs/feature_metadata.pkl`: Metadata including split information
 
 ### Models
 - `outputs/models/logistic_regression.pkl`: Trained Logistic Regression (binary)
@@ -199,16 +244,27 @@ Both models are evaluated using:
 - `outputs/models/xgboost_info.txt`: Model information (human-readable)
 
 ### Visualizations
-- `outputs/figures/rating_distribution.png`
-- `outputs/figures/review_length_by_rating.png`
-- `outputs/figures/category_analysis.png`
-- `outputs/figures/temporal_trends.png`
-- `outputs/figures/outlier_detection.png`
-- `outputs/figures/roc_curves.png`
-- `outputs/figures/lr_coefficients.png`
-- `outputs/figures/xgb_importance.png`
-- `outputs/figures/shap_summary_xgb.png` (optional)
-- `outputs/figures/shap_bar_xgb.png` (optional)
+
+**Model Performance:**
+- `outputs/figures/roc_curves.png` - ROC curves comparing both models
+- `outputs/figures/model_comparison_features.png` - Feature importance comparison
+- `outputs/figures/model_comparison_confusion.png` - Confusion matrix comparison
+- `outputs/figures/model_comparison_probabilities.png` - Probability distribution comparison
+- `outputs/figures/lr_coefficients.png` - Logistic Regression feature coefficients
+- `outputs/figures/xgb_importance.png` - XGBoost feature importance
+- `outputs/figures/shap_summary_xgb.png` - SHAP summary plot (optional)
+- `outputs/figures/shap_bar_xgb.png` - SHAP bar plot (optional)
+
+**Exploratory Data Analysis:**
+- `outputs/figures/rating_distribution.png` - Distribution of star ratings
+- `outputs/figures/review_length_by_rating.png` - Review length analysis by rating
+- `outputs/figures/review_length_distribution.png` - Overall review length distribution
+- `outputs/figures/category_analysis.png` - Product category breakdown
+- `outputs/figures/temporal_trends.png` - Review trends over time
+- `outputs/figures/outlier_detection.png` - Outlier detection visualization
+
+**Model Analysis:**
+- `outputs/figures/model_disagreement_examples.txt` - Text examples where models disagree
 
 ## Technical Details
 
@@ -222,11 +278,13 @@ Both models are evaluated using:
 - **TF-IDF**: Max 20,000 features, unigrams + bigrams
 - **Numeric Features**: Review length, year, month
 - **Labels**: Binary sentiment (drop 3-star reviews)
+- **Data Leakage Prevention**: Train/val split happens BEFORE feature engineering. TF-IDF vectorizer is fit ONLY on training data.
 
 ### Model Training
-- Train/validation split: 80/20
+- Train/validation split: 80/20 (done in feature engineering notebook BEFORE creating features)
 - Stratified sampling to maintain class distribution
 - Class imbalance handling (balanced weights / scale_pos_weight)
+- **Important**: The split is done in `02_feature_engineering.ipynb` to prevent data leakage. The modeling notebook loads pre-split data.
 
 ## Dependencies
 
@@ -260,6 +318,24 @@ The original Hugging Face dataset uses deprecated format.
 ### Memory Errors
 Try reducing the `n_samples` parameter in the first notebook (e.g., change 200000 to 100000).
 
+## Data Leakage Prevention
+
+**Critical Fix**: The pipeline now prevents data leakage by:
+
+1. **Splitting data BEFORE feature engineering** (in `02_feature_engineering.ipynb`)
+2. **Fitting TF-IDF vectorizer ONLY on training data**
+3. **Using training statistics for validation set imputation**
+4. **Saving pre-split train/val sets separately**
+
+The modeling notebook automatically detects and uses pre-split data. If old combined data is found, it will warn about potential data leakage.
+
+**Validation**: The `validate_model_performance()` function checks for:
+- Suspiciously high accuracy (>0.99 indicates data leakage)
+- Unrealistic train/val gaps
+- Perfect predictions (all correct)
+
+Run the test script to verify: `python scripts\test_pipeline.py`
+
 ## Notes
 
 - The project uses random seeds (42) for reproducibility
@@ -267,6 +343,7 @@ Try reducing the `n_samples` parameter in the first notebook (e.g., change 20000
 - SHAP analysis is optional and can be computationally expensive
 - spaCy model must be downloaded separately
 - All output files (models, features, figures) are excluded from git via `.gitignore`
+- **Always run notebooks in order**: 01_eda → 02_feature_engineering → 03_modeling
 
 ## License
 

@@ -62,6 +62,7 @@ outputs/*.pkl
 outputs/figures/*.png
 outputs/figures/*.jpg
 outputs/figures/*.pdf
+outputs/figures/*.txt
 outputs/*.json
 outputs/*.txt
 

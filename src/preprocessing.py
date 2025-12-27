@@ -5,12 +5,15 @@ Handles data ingestion, cleaning, and text preprocessing.
 
 import pandas as pd
 import numpy as np
-from datasets import load_dataset
 import re
-import spacy
 from pathlib import Path
 import pickle
 import json
+
+# Lazy imports to avoid hanging on module import
+# These are imported inside functions when needed
+# from datasets import load_dataset
+# import spacy
 
 
 def load_amazon_reviews(n_samples=200000, random_state=42):
@@ -63,7 +66,8 @@ def load_amazon_reviews(n_samples=200000, random_state=42):
                 else:
                     continue
             elif isinstance(ds_option, tuple):
-                # Load from Hugging Face repository
+                # Load from Hugging Face repository (lazy import)
+                from datasets import load_dataset
                 if ds_option[1]:
                     dataset = load_dataset(ds_option[0], ds_option[1], split="train")
                     dataset_name = f"{ds_option[0]}/{ds_option[1]}"
@@ -71,7 +75,8 @@ def load_amazon_reviews(n_samples=200000, random_state=42):
                     dataset = load_dataset(ds_option[0], split="train")
                     dataset_name = ds_option[0]
             else:
-                # Load by direct name
+                # Load by direct name (lazy import)
+                from datasets import load_dataset
                 dataset = load_dataset(ds_option, split="train")
                 dataset_name = ds_option
             
@@ -342,7 +347,7 @@ def preprocess_data(df, save_processed=True):
 
 if __name__ == "__main__":
     # Example usage
-    df_raw = load_amazon_reviews(n_samples=200000)
+    df_raw = load_amazon_reviews(n_samples=200000, random_state=42)  # Full size
     df_processed = preprocess_data(df_raw)
     print("\nPreprocessing pipeline complete!")
 

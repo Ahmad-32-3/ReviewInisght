@@ -1,0 +1,110 @@
+{
+  "model_name": "logistic_regression",
+  "model_type": "LogisticRegression",
+  "exported_at": "2025-12-26T22:52:16.643540",
+  "metrics": {
+    "accuracy": 0.9455124425050124,
+    "precision": 0.99933598937583,
+    "recall": 0.9292991664093856,
+    "f1_score": 0.9630459126539753,
+    "roc_auc": 0.9992841646481484
+  },
+  "hyperparameters": {
+    "C": 1.0,
+    "class_weight": "balanced",
+    "dual": false,
+    "fit_intercept": true,
+    "intercept_scaling": 1,
+    "l1_ratio": 0.0,
+    "max_iter": 1000,
+    "n_jobs": null,
+    "penalty": "deprecated",
+    "random_state": 42,
+    "solver": "lbfgs",
+    "tol": 0.0001,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "top_features": [
+    {
+      "feature": "material",
+      "coefficient": -0.06821246087809717
+    },
+    {
+      "feature": "recommend product",
+      "coefficient": -0.06026387590120146
+    },
+    {
+      "feature": "worth",
+      "coefficient": -0.05500202285800092
+    },
+    {
+      "feature": "disappointed",
+      "coefficient": -0.05318575417350048
+    },
+    {
+      "feature": "doesn work",
+      "coefficient": -0.0363168883906235
+    },
+    {
+      "feature": "work",
+      "coefficient": -0.03571094852114312
+    },
+    {
+      "feature": "broke",
+      "coefficient": -0.033307481929845895
+    },
+    {
+      "feature": "waste",
+      "coefficient": -0.027966476011842236
+    },
+    {
+      "feature": "terrible",
+      "coefficient": -0.026969438931751803
+    },
+    {
+      "feature": "product",
+      "coefficient": -0.026360807448669296
+    },
+    {
+      "feature": "poor",
+      "coefficient": -0.026353431676714223
+    },
+    {
+      "feature": "defective",
+      "coefficient": -0.02434449708349083
+    },
+    {
+      "feature": "cheap material",
+      "coefficient": -0.021239471378220638
+    },
+    {
+      "feature": "great",
+      "coefficient": 0.020833547633696423
+    },
+    {
+      "feature": "highly recommend",
+      "coefficient": 0.017613493210776723
+    },
+    {
+      "feature": "money",
+      "coefficient": -0.016435040677835158
+    },
+    {
+      "feature": "review_length",
+      "coefficient": 0.015979380440233178
+    },
+    {
+      "feature": "great product",
+      "coefficient": 0.015728136875196263
+    },
+    {
+      "feature": "review_month",
+      "coefficient": -0.014903761144064576
+    },
+    {
+      "feature": "satisfied",
+      "coefficient": 0.014653015991687755
+    }
+  ]
+}
